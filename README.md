@@ -1,6 +1,51 @@
-# Getting Started with Create React App
+# Getting Started with Algosdk and Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a very basic example of using [js-algorand-sdk](https://github.com/algorand/js-algorand-sdk) with [Create React App](https://github.com/facebook/create-react-app).
+
+Concretely, here is how the app was created:
+1. Set up skeleton:
+    ```bash
+    npx create-react-app algosdk-react-example
+    cd algosdk-react-example
+    yarn add algosdk
+    ```
+2. Edit `src/App.js` and make the following changes:
+    ```diff
+    diff --git a/src/App.js b/src/App.js
+    index 3784575..b6bc50b 100644
+    --- a/src/App.js
+    +++ b/src/App.js
+    @@ -1,11 +1,25 @@
+     import logo from './logo.svg';
+     import './App.css';
+    +import algosdk from 'algosdk';
+    +import { useEffect, useState } from 'react';
+    
+     function App() {
+    +  const [status, setStatus] = useState();
+    +  useEffect(async () => {
+    +    const algodClient = new algosdk.Algodv2("", "https://api.testnet.algoexplorer.io", 443);
+    +    setStatus(await algodClient.status().do());
+    +  }, []);
+    +
+       return (
+         <div className="App">
+           <header className="App-header">
+             <img src={logo} className="App-logo" alt="logo" />
+    +        <p>
+    +          Here is the Algorand status:
+    +        </p>
+    +        <pre style={{textAlign: "left", fontSize: "large"}}>
+    +          {JSON.stringify(status, null, 2)}
+    +        </pre>
+             <p>
+               Edit <code>src/App.js</code> and save to reload.
+             </p>
+    ```
+3. Start the project:
+    ```bash
+    yarn start
+    ```
 
 ## Available Scripts
 
